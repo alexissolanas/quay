@@ -48,13 +48,24 @@ repos:
         stages: [pre-commit]
     -   id: eslint
         name: ESLint
-        entry: web/node_modules/.bin/eslint --fix
-        language: system
+        entry: bash -c 'NODE_PATH="$(dirname "$(dirname "$(dirname "$(readlink -f "$(which eslint)")")")")" eslint --fix "$@"' --
+        language: node
         files: ^web/.*\.(js|jsx|ts|tsx)$
         exclude: ^web/Containerfile|^web/Dockerfile|^web/pnpm-lock\.yaml|^web/package-lock\.json
+        additional_dependencies:
+          - eslint@8.56.0
+          - '@typescript-eslint/eslint-plugin@5.62.0'
+          - '@typescript-eslint/parser@5.62.0'
+          - eslint-config-prettier@9.0.0
+          - eslint-plugin-import@2.28.1
+          - eslint-plugin-react@7.33.0
+          - eslint-plugin-prettier@5.0.0
+          - eslint-import-resolver-typescript@2.7.1
+          - prettier@3.0.3
+          - typescript@5.8.3
     -   id: check-playwright-tags
         name: Check Playwright required usage tags
-        entry: bash -c 'cd web && node playwright/ensure-required-tags.cjs'
+        entry: node web/playwright/ensure-required-tags.bundle.cjs
         language: system
         files: ^web/playwright/.*\.spec\.ts$
         pass_filenames: false
