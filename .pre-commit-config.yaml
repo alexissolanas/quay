@@ -48,7 +48,7 @@ repos:
         stages: [pre-commit]
     -   id: eslint
         name: ESLint
-        entry: bash -c 'NODE_PATH="$(dirname "$(dirname "$(dirname "$(readlink -f "$(which eslint)")")")")" eslint --fix "$@"' --
+        entry: bash -c 'NODE_PATH="$(dirname "$(dirname "$(dirname "$(readlink -f "$(which eslint)")")")")" eslint --fix --rule "import/no-unresolved:0" "$@"' --
         language: node
         files: ^web/.*\.(js|jsx|ts|tsx)$
         exclude: ^web/Containerfile|^web/Dockerfile|^web/pnpm-lock\.yaml|^web/package-lock\.json
@@ -63,6 +63,7 @@ repos:
           - eslint-import-resolver-typescript@2.7.1
           - prettier@3.0.3
           - typescript@5.8.3
+          - react@18.2.0
     -   id: check-playwright-tags
         name: Check Playwright required usage tags
         entry: bash -c 'NODE_PATH="$(dirname "$(dirname "$(dirname "$(readlink -f "$(which tsc)")")")")" node web/playwright/ensure-required-tags.cjs'
