@@ -65,10 +65,12 @@ repos:
           - typescript@5.8.3
     -   id: check-playwright-tags
         name: Check Playwright required usage tags
-        entry: node web/playwright/ensure-required-tags.bundle.cjs
-        language: system
+        entry: bash -c 'NODE_PATH="$(dirname "$(dirname "$(dirname "$(readlink -f "$(which tsc)")")")")" node web/playwright/ensure-required-tags.cjs'
+        language: node
         files: ^web/playwright/.*\.spec\.ts$
         pass_filenames: false
+        additional_dependencies:
+          - typescript@5.8.3
 -   repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
     hooks:
